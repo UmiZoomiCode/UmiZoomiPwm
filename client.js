@@ -1,13 +1,21 @@
 var net = require('net');
+
 var client = net.connect({port: 9999}, () => {
-	client.write('Hello World\r\n');
+	interval = setInterval(()=>{
+		randomNumber = Number((Math.random() + 1).toFixed(2));
+		console.log(randomNumber);
+
+		client.write(JSON.stringify({
+			msg: "ChangeSpeed",
+			speed: randomNumber
+		}) + "\r\n");
+	},3000)
 });
 
 client.on('data', (data) => {
 	console.log(data.toString());
-	//client.end();
 });
 
-client.on('end', () => {
+client.on('close', () => {
 	console.log("disconnected");
 });
