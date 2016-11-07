@@ -21,7 +21,7 @@ def ConvertSpeedToMessage(speed, forward=True):
         direction = "0" # negative means brake
         speed = speed * -1
 
-    print(direction + str(speed))
+    # print(direction + str(speed))
 
     # stop if speed is 0
     if(speed == 0):
@@ -32,12 +32,8 @@ def ConvertSpeedToMessage(speed, forward=True):
     return (direction + str(speed))
 
 def ChangeSpeed(newSpeed):
-    if(newSpeed > 0):
-        arduino.write(ConvertSpeedToMessage(newSpeed).encode())
-    elif(newSpeed < 0):    
-        arduino.write(ConvertSpeedToMessage(newSpeed, False).encode())
-    else:
-        arduino.write(ConvertSpeedToMessage(newSpeed, False).encode())
+    print("changing speed")
+    arduino.write(ConvertSpeedToMessage(newSpeed).encode())
 
 
 # settings : [dict]{acceleration, currentSpeed, maxSpeed}
@@ -52,6 +48,7 @@ def Accelerate(s):
                     s['currentSpeed'] -= s['deceleration']
 
             else: 
+                print("accelerate")
                 if(s['currentSpeed'] + s['acceleration'] > s['maxSpeed']):
                     s['currentSpeed'] = s['maxSpeed']
                 else:

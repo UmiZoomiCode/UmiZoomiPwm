@@ -1,0 +1,4 @@
+Dependencies:
+
+SimpleWebSocketServer
+pygame

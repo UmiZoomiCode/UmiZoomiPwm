@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import serial
 import struct
 import json
@@ -19,20 +20,20 @@ class PWMConverter(WebSocket):
     def handleMessage(self):
         global s
         try:
-            print(self.data)
             msg = json.loads(self.data)
-
+            # pprint(msg)
             if(msg['msg'] == "ChangeSpeed"):
                 newSpeed = int(msg["speed"])
+                print(newSpeed)
                 
                 if(newSpeed >= 100):
+                    print("TOO MUCH")
                     newSpeed = 99
                 
                 s["maxSpeed"] = newSpeed
-                print(s["maxSpeed"])
 
         except Exception as e:
-            print(str(e))
+            print("error: " + str(e))
 
     def handleConnected(self):
         print(self.address, 'connected')
