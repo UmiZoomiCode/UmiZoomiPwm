@@ -1,4 +1,4 @@
-import socketserver;
+import socketserver
 import serial
 import struct
 import json
@@ -11,8 +11,10 @@ try:
 except serial.serialutil.SerialException:
 	print("arduino failed to connect")
 
+
 maxSpeed = 1.0
-acceleration = 1.0
+acceleration = 0.3
+currentSpeed = 0.0
 
 def newMaxSpeed(newMax):
 	if(newMax <= 1.0 and newMax >= 0):
@@ -29,29 +31,45 @@ def newAcceleration(accel):
 def sendNewSpeed(newSpeed):
 	speed = str(newSpeed).replace('.','')
 	print(speed)
-	arduino.write(speed.encode())
+	#arduino.write(speed.encode())
 	return True
 
 #self.wfile.write(bytearray("Hello World", "utf8"));
 class handler(socketserver.StreamRequestHandler):
-	def handle(self):
 
+	def handle(self):
+		global currentSpeed
+		global maxAcceleration
+		global acceleration
+		global maxSpeed
 		while True:
 			self.data = self.rfile.readline().strip()
 			if(self.data != None):
-				print("Got a message");
+				print(self.data)
 				message = str(self.data)[1:].replace("\'", "")
-				pprint(message)
 				try:
 					data = json.loads(message)
+					
 					if(data['msg'] == "ChangeSpeed"):
-						speedToSend = float(data['speed']) * maxSpeed
-						print(speedToSend)
-						if(sendNewSpeed(speedToSend)):
-							self.wfile.write(bytearray("Speed Sent", "utf8"))
+
+						newSpeed = float(data['speed'])
+						if(newSpeed > currentSpeed):
+							while(currentSpeed < newSpeed):
+								if(sendNewSpeed(currentSpeed)):
+									self.wfile.write(bytearray("Speed Sent", "utf8"))
+								else:
+									self.wfile.write(bytearray("Speed failed to send", "utf8"))
+								currentSpeed+=acceleration
 						else:
-							self.wfile.write(bytearray("Speed failed to send", "utf8"))
+							while(currentSpeed > newSpeed):
+								if(sendNewSpeed(currentSpeed)):
+									self.wfile.write(bytearray("Speed Sent", "utf8"))
+								else:
+									self.wfile.write(bytearray("Speed failed to send", "utf8"))
+								currentSpeed-=acceleration
+
 						self.data = None
+
 					elif(data['msg'] == "Stop"):
 						print("stopping motor")
 						sendNewSpeed(0)
