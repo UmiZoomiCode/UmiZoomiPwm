@@ -1,5 +1,5 @@
 import bluetoothConnector as bt
-import websocketserver as wss
+#import websocketserver as wss
 import AcceleratorThread as at
 
 from threading import Thread
@@ -19,12 +19,13 @@ if __name__ == "__main__":
     currentSpeed = 0
     while True:
         controller.check_status()
+        print controller.buttons
         if controller.buttons != None:
             newSpeed = int(float(controller.buttons['r3']) * 100) * -1
             # print("newSpeed: " + str(newSpeed))
             # print("currentSpeed: " + str(currentSpeed))
             # if the speed difference +- 15
-
+            print newSpeed
             if(int(controller.buttons['r1']) == 0):
                 if(newSpeed - currentSpeed >= 5 or currentSpeed - newSpeed >= 5):
                     #print("changing")

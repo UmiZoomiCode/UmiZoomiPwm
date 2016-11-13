@@ -83,6 +83,7 @@ class PS3_Controller:
 
   def check_if_connected(self):
     try:
+      return True
       busses = usb.busses()
       for bus in busses:
           devices = bus.devices
@@ -126,6 +127,7 @@ if __name__ == "__main__":
   controller = PS3_Controller()
   while True:
     controller.check_status()
+    print(controller.buttons)
     if controller.buttons != None:
       newSpeed = float(controller.buttons['r3']) * 100
 
