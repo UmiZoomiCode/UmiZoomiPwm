@@ -31,9 +31,13 @@ class PS3_Controller:
 				if event.type == pygame.JOYBUTTONDOWN:
 					if event.button == 8:
 						self.buttons["cruise"] = 1
+					if event.button == 11:
+						self.buttons["cruise"] = 1
 				if event.type == pygame.JOYBUTTONUP:
 					if event.button == 8:
 						self.buttons["cruise"] = 0
+					if event.button == 11:
+						self.buttons["cruise"] = 1
 					
 	def check_if_connected(self):
 		try:
