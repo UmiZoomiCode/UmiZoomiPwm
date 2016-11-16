@@ -26,11 +26,13 @@ class PS3_Controller:
 				if event.type == pygame.JOYAXISMOTION:
 					if event.axis == 3:
 						self.buttons["axis"] = event.value
+					if event.axis == 1:
+						self.buttons["axis"] = event.value
 				if event.type == pygame.JOYBUTTONDOWN:
-					if event.button == 11:
+					if event.button == 8:
 						self.buttons["cruise"] = 1
 				if event.type == pygame.JOYBUTTONUP:
-					if event.button == 11:
+					if event.button == 8:
 						self.buttons["cruise"] = 0
 					
 	def check_if_connected(self):
@@ -44,12 +46,12 @@ class PS3_Controller:
 				self.j = None
 				return False
 		except:
-			print "exception in check_if_connected"
+			print("exception in check_if_connected")
 			return False
 	
 	def wait_for_connection(self):
 		while self.check_if_connected == False:
-			print "waiting for connection"
+			print("waiting for connection")
 			sleep(.5)
 		return True
 			
@@ -65,18 +67,18 @@ if __name__=="__main__":
 	while True:
 		if controller.check_if_connected():		
 			controller.update_buttons()
-			#print controller.buttons
 			
 			newSpeed = int(float(controller.buttons["axis"]) * -100)
-			#print newSpeed
 			if(controller.buttons["cruise"] == 0):
 				if(newSpeed - currentSpeed >= 5 or currentSpeed - newSpeed >= 5):
 					print("changing speed: " + str(newSpeed))
 					currentSpeed = newSpeed
 					at.ChangeSpeed(currentSpeed)
+			else:
+				print("cruisin")
 		else:
-			print "no controller connected"
+			print("no controller connected")
 			
 			
-		sleep(.5)
+		sleep(.2)
 	

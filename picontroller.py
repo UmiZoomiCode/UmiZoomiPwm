@@ -1,21 +1,9 @@
-# connect and get blue tooth stuffs
-
 #!/usr/bin/python
-import pygame
 import os
 import time
 import usb
 
 from time import sleep
-#from websocket import create_connection
-
-# print("Sending 'Hello, World'...")
-# ws.send("Hello, World")
-# print("Sent")
-# print("Reeiving...")
-# result =  ws.recv()
-# print("Received '%s'" % result)
-# ws.close()
 
 if not pygame.joystick.get_init():
     pygame.joystick.init()
@@ -53,30 +41,13 @@ class PS3_Controller:
       return False
 
   def update_buttons(self):
-    print("Update buttons")
     if self.joystick is not None:
       pygame.event.pump()
       try:
-        print("joystick")
-        print(self.joystick.get_axis(2))
-        self.buttons = {   
-          # 'left': self.joystick.get_button(7), 
-          # 'right' : self.joystick.get_button(5),
-          # 'up' : self.joystick.get_button(4), 
-          # 'down': self.joystick.get_button(6),
-          # 'square' : self.joystick.get_button(15),
-          # 'x' : self.joystick.get_button(14),
-          # 'circle' : self.joystick.get_button(13),
-          # 'triangle' : self.joystick.get_button(12),
-          # 'l1' : self.joystick.get_button(10),
-          # 'l2' : self.joystick.get_button(8),
-          # 'select' : self.joystick.get_button(0),
-          # 'start' : self.joystick.get_button(3),
-          # 'l3' : self.joystick.get_button(1),
+        self.buttons = {
           'r1' : self.joystick.get_button(11),
           'r2' : self.joystick.get_button(9),
           'r3' : self.joystick.get_axis(3),
-          'l3' : self.joystick.get_axis(2)
         }
       except pygame.error as e:
         print(e)
@@ -87,16 +58,10 @@ class PS3_Controller:
 
   def check_if_connected(self):
     try:
-      busses = usb.busses()
-      for bus in busses:
-          devices = bus.devices
-          for dev in devices:
-            if dev.idVendor == 1356:
-              return True
-      return False
-    except usb.core.USBError:
-      print("USB Disconnected")
-      return False
+        string lst = os.listdir("/dev/input/js*")
+        print lst
+    except:
+        print "except in check_if_connected"
     
   def check_status(self):
     self.update_buttons()
@@ -130,7 +95,6 @@ if __name__ == "__main__":
   controller = PS3_Controller()
   while True:
     controller.check_status()
-    print(controller.buttons)
     if controller.buttons != None:
       newSpeed = float(controller.buttons['r3']) * 100
 
