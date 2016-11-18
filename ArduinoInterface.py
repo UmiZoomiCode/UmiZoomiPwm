@@ -15,24 +15,26 @@ except serial.serialutil.SerialException:
 
 def ConvertSpeedToMessage(speed, forward=True):
     direction = "1"
-    if(speed >= 100):
-        speed = 99
+    
     if(speed < 0):
         direction = "0" # negative means brake
         speed = speed * -1
+    
+    if(speed >= 100):
+        speed = 99
 
     # print(direction + str(speed))
 
     # stop if speed is 0
     if(speed == 0):
-        return "0"
+        return "100"
 
     if(speed < 10):
         return (direction + "0" + str(speed))
+    print("Converted Speed: " + direction + str(speed))
     return (direction + str(speed))
 
 def ChangeSpeed(newSpeed):
-    print("changing speed")
     arduino.write(ConvertSpeedToMessage(newSpeed).encode())
 
 

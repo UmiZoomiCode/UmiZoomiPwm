@@ -1,6 +1,6 @@
 import bluetoothConnector as bt
 #import websocketserver as wss
-import AcceleratorThread as at
+import ArduinoInterface as at
 
 from threading import Thread
 from time import sleep
@@ -21,12 +21,10 @@ if __name__ == "__main__":
         controller.check_status()
         #print(controller.buttons)
         if controller.buttons != None:
-            print(controller.buttons)
             newSpeed = int(float(controller.buttons['r3']) * 100) * -1
             # print("newSpeed: " + str(newSpeed))
             # print("currentSpeed: " + str(currentSpeed))
             # if the speed difference +- 15
-            print("newspeed " + str(newSpeed))
             if(int(controller.buttons['r1']) == 0):
                 if(newSpeed - currentSpeed >= 5 or currentSpeed - newSpeed >= 5):
                     #print("changing")
@@ -35,7 +33,7 @@ if __name__ == "__main__":
                     #     controller.buttons['r3'] = .99
                     print("changing speed: " + str(newSpeed))
                     currentSpeed = newSpeed
-                    #at.ChangeSpeed(currentSpeed)
+                    at.ChangeSpeed(currentSpeed)
 
             # if(int(controller.buttons['r1']) == 0):
                 # controller.sendMessage("{\"msg\": \"ChangeSpeed\",\"speed\" : "+str(newSpeed * -1)+"}")

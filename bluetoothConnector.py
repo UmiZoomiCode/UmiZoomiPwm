@@ -53,12 +53,9 @@ class PS3_Controller:
       return False
 
   def update_buttons(self):
-    print("Update buttons")
     if self.joystick is not None:
       pygame.event.pump()
       try:
-        print("joystick")
-        print(self.joystick.get_axis(2))
         self.buttons = {   
           # 'left': self.joystick.get_button(7), 
           # 'right' : self.joystick.get_button(5),
@@ -79,7 +76,6 @@ class PS3_Controller:
           'l3' : self.joystick.get_axis(2)
         }
       except pygame.error as e:
-        print(e)
         self.joystick = None
     else:
       self.buttons = None
@@ -130,11 +126,9 @@ if __name__ == "__main__":
   controller = PS3_Controller()
   while True:
     controller.check_status()
-    print(controller.buttons)
     if controller.buttons != None:
       newSpeed = float(controller.buttons['r3']) * 100
 
-      print(newSpeed)
       if(int(controller.buttons['r3']) <= -1):
         controller.buttons['r3'] = .99
 

@@ -3,7 +3,7 @@
 import pygame
 import time
 import os
-import AcceleratorThread as at
+import ArduinoInterface as at
 
 from subprocess import call
 from time import sleep
@@ -74,7 +74,7 @@ if __name__=="__main__":
 			
 			newSpeed = int(float(controller.buttons["axis"]) * -100)
 			if(controller.buttons["cruise"] == 0):
-				if(newSpeed - currentSpeed >= 5 or currentSpeed - newSpeed >= 5):
+				if(newSpeed - currentSpeed >= 1 or currentSpeed - newSpeed >= 1):
 					print("changing speed: " + str(newSpeed))
 					currentSpeed = newSpeed
 					at.ChangeSpeed(currentSpeed)
